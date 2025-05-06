@@ -5,22 +5,22 @@ document.getElementById('regForm').addEventListener('submit', function (e) {
         {
             elem: document.getElementById('email'),
             feltetel: (value) => /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(value),
-            uzenet: 'E-mail'
+            uzenet: 'Hibás e-mail cím!'
         },
         {
             elem: document.getElementById('nev'),
             feltetel: (value) => value.length >= 5 && value.length <= 30,
-            uzenet: 'Név (5–30 karakter)'
+            uzenet: 'A név hossza 5 és 30 karakter között kell legyen!'
         },
         {
             elem: document.getElementById('jelszo'),
             feltetel: (value) => value.length >= 6 && value.length <= 12,
-            uzenet: 'Jelszó (6–12 karakter)'
+            uzenet: 'A jelszó hossza 6 és 12 karakter között kell legyen!'
         },
         {
             elem: document.getElementById('kor'),
             feltetel: (value) => !isNaN(parseInt(value)) && parseInt(value) >= 18 && parseInt(value) <= 100,
-            uzenet: 'Kor (18–100)'
+            uzenet: 'A kor 18 és 100 között kell legyen!'
         }
     ];
 
@@ -38,8 +38,9 @@ document.getElementById('regForm').addEventListener('submit', function (e) {
         const hiba = document.createElement('div');
         hiba.id = 'hiba-' + mezo.id;
         hiba.style.color = 'red';
-        hiba.textContent = 'Hibás adat: ' + uzenet;
-        mezo.parentNode.insertBefore(hiba, mezo);
+        hiba.style.fontSize = '0.9em';
+        hiba.textContent = uzenet;
+        mezo.parentNode.appendChild(hiba);
         mezo.style.backgroundColor = '#f99';
         valid = false;
     };
@@ -52,8 +53,16 @@ document.getElementById('regForm').addEventListener('submit', function (e) {
     });
 
     // Nemek validációja
+    const nemHiba = document.querySelector('#hiba-nem');
+    if (nemHiba) nemHiba.remove();
+
     if (!Array.from(nemek).some(nem => nem.checked)) {
-        alert('Hibás adat: Nem');
+        const hiba = document.createElement('div');
+        hiba.id = 'hiba-nem';
+        hiba.style.color = 'red';
+        hiba.style.fontSize = '0.9em';
+        hiba.textContent = 'Válassz nemet!';
+        nemek[0].parentNode.appendChild(hiba);
         valid = false;
     }
 
